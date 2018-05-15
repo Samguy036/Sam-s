@@ -1,0 +1,21 @@
+    BoxCollider2D collider2D; 
+    Rigidbody2D selfRigid;
+    float groundLength;
+    float speed=5;
+
+
+  void Start () {
+        collider2D = GetComponent<BoxCollider2D>();//获取碰撞器
+        selfRigid = GetComponent<Rigidbody2D>();//获取刚体
+        groundLength = collider2D.size.x;//背景是两幅图片拼接起来的，单张图片的宽度即是图片上碰撞器的宽度，即碰撞器的x轴的值      
+        selfRigid.velocity= new Vector2(-speed,0);//给图片一个从左向右的力
+	}
+
+   void Update()
+    {
+        if (transform.position.x < -groundLength)//当图片滚动到最边缘
+        {
+            Vector2 offset = new Vector2(groundLength * 2f - 0.1f, 0);//复位
+            transform.position = (Vector2)transform.position + offset;
+        }
+    }
