@@ -1,0 +1,39 @@
+    float speed = 10;//设置移动速度
+    int state;//角色状态
+    int lastState = 0;//上一次状态
+    int right = 0;//右转
+    int left = 1;//左转
+ 
+
+
+    void SetState(int currentState)
+    {
+        Vector3 transformValue = new Vector3();//平移量
+        int rotateValue = (currentState - state) * 180;//旋转量，打个比方从右向左转：（0-1）*180，就是转-180°
+        switch (currentState)//还可以添加前后两个case值，这里就不举例
+        {
+            case 0:
+                transformValue = Vector3.right * Time.deltaTime * speed;
+                break;
+            case 1:
+                transformValue = Vector3.left * Time.deltaTime * speed;
+                break;
+        }
+        transform.Rotate(Vector3.up, rotateValue);//旋转角色，up是沿Y轴
+        transform.Translate(transformValue, Space.World);//平移角色
+        lastState = state;//赋值
+        state = currentState;//赋值
+    }
+    
+    
+        public void Move()//完成，可以在update里调用了
+    {
+        if (Input.GetKey(KeyCode.RightArrow))
+        {
+            SetState(right);
+        }
+        if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            SetState(left);
+        }
+    }
