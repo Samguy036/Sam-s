@@ -1,0 +1,12 @@
+void Update(){  
+    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);  
+  
+    Debug.Log(ray);  
+  
+    RaycastHit hitInfo;  
+  
+    if(Physics.Raycast(ray, out hitInfo, 200, whatIsGround)){  
+        Vector3 target = hitInfo.point;  
+        target.y = transform.position.y;  
+        transform.LookAt(target);  
+    }  
