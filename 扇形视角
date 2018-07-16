@@ -1,0 +1,32 @@
+public void DistanceCheck()
+    {
+        //设置视角的起点
+        var sightStart = new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z);
+        //设置扇形视野的角度
+        var sector = Quaternion.Euler(0, -(sightAngle / 2), 0) * transform.forward * sightDis;
+
+        bool noTarget = true;
+
+        for (int i = 0; i <= sightLineNum; i++)
+        {
+            var step = sightAngle / sightLineNum;
+            var v = Quaternion.Euler(0, step * i, 0) * sector;
+            sightEnd.y = sightStart.y;
+            sightEnd = sightStart + v;
+            RaycastHit hit;
+            if (Physics.Linecast(sightStart, sightEnd, out hit))
+            {
+                sightEnd = hit.point;
+                if (hit.transform.CompareTag("Player"))
+                {
+                    target = player.transform;
+                    noTarget = false;
+                }
+            }
+            Debug.DrawLine(sightStart, sightEnd, Color.green);
+        }
+        if (noTarget)
+        {
+            target = null;
+        }
+    }
